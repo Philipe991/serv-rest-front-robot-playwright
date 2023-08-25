@@ -1,6 +1,7 @@
 *** Settings ***
 Resource    ../resources/resources.robot
 Suite Setup    Cadastrar usuário e logar
+Suite Teardown    Close Browser    ALL
 
 *** Test Cases ***
 Login com sucesso Serv Rest Front
