@@ -25,3 +25,30 @@ Conferir usuário cadastrado com sucesso
     Get Text    h1    ==    Bem Vindo Phill
     # Verificar se o botão Logout possui valor e está visível
     Get Element States    //button[contains(.,'Logout')]    validate    value & visible
+
+Criar usuário via API
+    ${EMAIL}    FakerLibrary.Email
+    Set Suite Variable    ${EMAIL}
+
+    ${resposta}    Http    https://serverest.dev/usuarios    
+    ...    method=POST
+    ...    body={"nome": "Fulano da Silva", "email": "${EMAIL}", "password": "teste", "administrador": "true"}
+
+    Should Be Equal As Integers    ${resposta["status"]}    201
+
+Logar com o usuário cdadastrado via API
+    ${resposta}    Http    https://serverest.dev/login    
+    ...    method=POST
+    ...    body={"email": "${EMAIL}", "password": "teste"}
+    
+    Should Be Equal As Integers    ${resposta["status"]}    200
+
+    LocalStorage Set Item    serverest/userNome    Philipe Melo
+    LocalStorage Set Item    serverest/userEmail    ${EMAIL}
+    LocalStorage Set Item    serverest/userToken    ${resposta["body"]["authorization"]}
+
+    Go To    https://front.serverest.dev/admin/home
+    Take Screenshot
+
+Acessar a lista de usuários
+    Click    //a[contains(.,'Listar Usuários')]

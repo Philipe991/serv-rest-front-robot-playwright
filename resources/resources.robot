@@ -60,3 +60,19 @@ Então o sistema deve exibir a mensagem
 Aguardar o loader
     Wait For Elements State   xpath = //div[contains(@class,'loadingLoader')]    visible
     Wait For Elements State   xpath = //div[contains(@class,'loadingLoader')]    hidden
+
+Cadastrar usuário e logar
+    New Browser
+    New Page    url=${SITE_SERVE_REST}
+    Criar usuário via API
+    Logar com o usuário cdadastrado via API
+    ${STORAGE_FILE}    Save Storage State
+    Set Suite Variable    ${STORAGE_FILE}
+
+Abrir o site ServeRest Front logado
+    New Context    viewport={'width': 1800, 'height':900}    
+    ...    storageState=${STORAGE_FILE}
+    New Page    url=${SITE_SERVE_REST}/admin/home
+    Get Text    h1    ==    Bem Vindo Philipe Melo
+    
+    Take Screenshot
