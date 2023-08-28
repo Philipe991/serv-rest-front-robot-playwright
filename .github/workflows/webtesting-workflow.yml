@@ -29,11 +29,12 @@ jobs:
 
       - name: Run Robot Framework WEB Tests
         run: |
-          robot -d ./results -v HEADLESS:true -v BROWSER:chromium tests
+          robot -d ./results -v HEADLESS:true \ 
+          -v BROWSER:chromium tests
 
       - name: Upload Tests Results
         if: always()
-        uses: actions/upload-artifacts@v3
+        uses: actions/upload-artifact@v3
         with:
           name: results-chromium
           path: ./results
